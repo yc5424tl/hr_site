@@ -2,19 +2,81 @@
 
 APPS
 
-    WEBSITE (hr_site)
+    COMMON:
+
+            MODELS
+                ADDRESS
+                    street-address: str
+                    apt-suite: str
+                    city: str
+                    state: [choice]
+                    zip: str
+                    category: [venue, mailing, billing]
+
+
+    WEBSITE: (hr_site)
+
+            MODELS
+                USER
 
 
 
 
-    SHOWS/TOUR (hr_live)
+    SHOWS: (hr_live)
+
+            MODELS
+                SHOW
+                    date:     datetime
+                    venue:    Venue
+                    artists:  [Artist]
+
+                VENUE
+                    name:     str
+                    address:  Address
+                    website:  url
+
+                ARTIST
+                    name: str
+                    website: url
+
+            TABLES
+                ARTIST-SHOW:
+
+    MERCH: (hr_store)
+
+            MODELS
+                CUSTOMER
+                    user: site.User
+
+                CUSTOMER-ADDRES
+                    id: int
+                    address: Address
+                    customer: Customer
+
+                ITEM
+                    pk: int
+                    name: str
+                    description: str
+                    image: File
+                    category: [options]
+                    price: decimal
+                    on-hand: positive-integer
 
 
+                ORDER
+                    order_num: String
+                    customer: Customer {orders}
+                    date_created: DateTime
+                    date_shipped: DateTime
+                    status: [created, shipped, cancelled, backstocked]
+                    promo_code: String
+                    mailing-address: Address
+                    billing-address: Adress
 
-
-    MERCH  (hr_store)
-
-
+                ORDERLINE
+                    order: Order
+                    item: Item
+                    quantity: int
 
 
     ANNOUNCEMENTS (hr_announce)
