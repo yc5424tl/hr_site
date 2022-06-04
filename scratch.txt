@@ -1,0 +1,20 @@
+#noqa
+
+APPS
+
+    WEBSITE (hr_site)
+
+
+
+
+    SHOWS/TOUR (hr_live)
+
+
+
+
+    MERCH  (hr_store)
+
+
+
+
+    ANNOUNCEMENTS (hr_announce)
