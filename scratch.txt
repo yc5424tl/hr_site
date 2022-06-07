@@ -79,4 +79,4 @@ APPS
                     quantity: int
 
 
-    ANNOUNCEMENTS (hr_announce)
+    ANNOUNCEMENTS (hr_bulletin)
