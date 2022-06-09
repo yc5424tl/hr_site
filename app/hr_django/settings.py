@@ -4,17 +4,22 @@
 import os
 import uuid
 from pathlib import Path
-from app.hr_access.models import User as CustomUser
+
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from app import hr_access
+from app.hr_access.models import User as CustomUser
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEPLOYMENT = os.getenv("DEPLOYMENT")
 ALLOWED_HOSTS = ['127.0.0.1:8000', 'localhost:8000', 'hellareptilian.com']
 SECURE_SSL_REDIRECT = True
 AUTH_USER_MODEL = CustomUser
+
+PHONENUMBER_DB_FORMAT = "NATIONAL"  # may want to switch to E164
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
+PHONENUMBER_DEFAULT_REGION = "US"
 
 # learndjango.com/tutorials/django-best-practices-security
 if DEPLOYMENT == "PROD":
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djstripe',
+    'phonenumber_field',
     'hr_access',
     'hr_bulletin',
     'hr_payment',
