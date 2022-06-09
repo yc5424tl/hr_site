@@ -1,11 +1,15 @@
 
+#noqa
+
 import os
 import uuid
 from pathlib import Path
-from hr_access.models import User as CustomUser
+from app.hr_access.models import User as CustomUser
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from app import hr_access
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEPLOYMENT = os.getenv("DEPLOYMENT")
 ALLOWED_HOSTS = ['127.0.0.1:8000', 'localhost:8000', 'hellareptilian.com']
@@ -42,6 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djstripe',
+    'hr_access',
+    'hr_bulletin',
+    'hr_payment',
+    'hr_store',
+    'hr_web',
 ]
 
 
@@ -96,10 +105,10 @@ DATABASES["default"].update(db_from_env)
 
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
 

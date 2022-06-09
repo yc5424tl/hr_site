@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 from django.utils.translation import gettext, gettext_lazy as _
 
+
 # Register your models here.
 
 class CustomUserAdmin(UserAdmin):
@@ -19,5 +20,6 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('avatar',)})
     )
+
 
 admin.site.register(User, CustomUserAdmin)

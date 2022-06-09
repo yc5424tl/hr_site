@@ -1,6 +1,49 @@
 #noqa
 
+#=================================================================
+NOTES
+
+    #Image for Ubuntu 22.04 Jammmy has issue with apt-keys/gpg/signatures/public_key which prevents apt & apt-get from running correctly, crashing the build. Apparently using a newer version of Docker may solve this, however I happen to be on Win7 on BlackBox, which runs the latest version of the deprecated docker-toolbox. Will have to  boot into Win10 or Pop! OS or use the laptop to test the solution =(.
+
+    execute command in container == docker exec -it foo_container command
+
+    build container from compose == docker build . --file docker-compose.yml
+
+
+
+
+
+
+#===================================================================
 APPS
+    ACCESS: Users/Authentication/Authorization/Login/Password Reset/Sign Up
+
+    BULLETIN: CRUD posts to the top of the front page by authorized users/staff
+
+    STORE: Product Gallery, CRUD Products, Shopping Cart, Merchant Utilites
+
+    PAYMENT: Payment processing for store using Stripe
+
+    WEB: The website's framework to which components of other apps are incorporated
+
+    SHOWS: Display upcoming show/venue info, Admin utilities/CRUD/Data Analysis/
+
+    STORAGE: Configures and handles media and static asset stoage and retreival.
+
+
+
+#=====================================================================
+MODELS
+
+    ACCESS: User, Group
+    BULLETIN: Announcement
+    STORE: Product, Customer, (Cart)
+    PAYMENT: *See what Stripe autogenerates* (Address, Order, Payment)
+    WEB: --
+    SHOWS: Show, Venue, Artist, (Tour)
+
+
+
 
     COMMON:
 

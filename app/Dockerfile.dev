@@ -1,0 +1,94 @@
+#!/bin/bash
+
+#FROM ubuntu:jammy as BUILDER
+FROM ubuntu:20.04 as BUILDER
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /usr/src/app
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV TZ=America/Chicago
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONBUFFERED 1
+ENV DEPLOYMENT DEV
+
+
+
+# RUN chmod a+r /etc/apt/trusted.gpg.d/ubuntu-keyring-2012-cdimage.gpg
+# RUN chmod a+r /etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg
+
+RUN apt-get update && \
+    apt-get install -y \
+            curl \
+            gcc \
+            libpq-dev \
+            musl-dev \
+            python3-dev \
+            python3-pip
+
+# RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -yes -o /usr/share/keyrings/docker-archive-keyring.gpg
+# RUN chmod a+r /usr/share/keyrings/docker-archive-keyring.gpg
+
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install flake8
+COPY . .
+RUN flake8 --ignore=E501,F401 .
+
+RUN mkdir /requirements
+COPY /requirements ./requirements
+RUN python3 requirements/build_requests_file.py
+RUN mv requirements/requirements.txt .
+
+RUN python3 -m pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+
+#1/bin/bash
+
+#FROM ubuntu:jammy
+FROM ubuntu:20.04
+SHELL ["/bin/bash", "-c"]
+
+RUN mkdir -p /home/app
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV TZ America/Chicago
+ENV HOME /home/app
+ENV APP_HOME ${HOME}/web
+
+RUN mkdir ${APP_HOME}
+RUN mkdir ${APP_HOME}/staticfiles
+RUN mkdir ${APP_HOME}/mediafiles
+RUN mkdir ${APP_HOME}/static
+
+WORKDIR ${APP_HOME}
+
+RUN apt-get update && \
+    apt-get install -y \
+    libpq-dev \
+    nano \
+    python3-dev \
+    python3-pip
+
+COPY --from=BUILDER /usr/src/app/wheels /wheels
+COPY --from=BUILDER /usr/src/app/requirements.txt .
+COPY --from=BUILDER /usr/src/app/requirements /requirements
+
+RUN apt-get update && \
+    apt-get install -y \
+    python3-dev \
+    python3-pip
+
+RUN python3 -m pip install wheel
+RUN python3 -m pip install --no-cache /wheels/*
+
+COPY ./enterpoint.dev.sh ${APP_HOME}
+
+COPY . ${APP_HOME}
+
+# See if this will take care of the permissions
+RUN chmod +x entrypoint.deb.sh
+
+ENTRYPOINT ["/home/app/web/entrypoint.dev.sh"]
+
